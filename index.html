@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwiftBus · book your ride</title>
+  <!-- Google Font & Font Awesome for icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(145deg, #f8faff 0%, #eef2f9 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+    }
+
+    /* main card */
+    .booking-platform {
+      max-width: 1300px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 3rem;
+      padding: 2.5rem 2.5rem 2rem;
+      box-shadow: 0 30px 50px -20px rgba(0, 20, 40, 0.25),
+                  inset 0 1px 2px rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      transition: all 0.2s;
+    }
+
+    /* header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.3rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      background: #1e3c72;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      width: 48px;
+      height: 48px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.8rem;
+      box-shadow: 0 10px 15px -5px rgba(30, 60, 114, 0.4);
+    }
+
+    .logo-text h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #0b1e33;
+      line-height: 1.2;
+    }
+
+    .logo-text span {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #4b5b6c;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .logo-text span i {
+      color: #2a5298;
+      font-size: 0.7rem;
+    }
+
+    .user-badge {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: #ffffffd9;
+      backdrop-filter: blur(8px);
+      padding: 0.6rem 1.2rem 0.6rem 1rem;
+      border-radius: 40px;
+      box-shadow: 0 10px 18px -10px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .user-badge i {
+      font-size: 1.2rem;
+      color: #2a5298;
+    }
+
+    .user-badge .avatar {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(145deg, #1e3c72, #2a5298);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .user-badge .name {
+      font-weight: 600;
+      color: #0b1e33;
+      font-size: 0.95rem;
+    }
+
+    /* main grid */
+    .booking-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 2rem;
+    }
+
+    /* search panel */
+    .search-panel {
+      background: #ffffffcc;
+      backdrop-filter: blur(4px);
+      border-radius: 2rem;
+      padding: 2rem 2rem 2rem;
+      box-shadow: 0 12px 28px -12px rgba(0, 20, 40, 0.15);
+      border: 1px solid #ffffff;
+      transition: all 0.3s;
+    }
+
+    .search-panel h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1.75rem;
+      color: #132b44;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .search-panel h2 i {
+      color: #2a5298;
+      background: #e9effa;
+      padding: 0.45rem;
+      border-radius: 14px;
+      font-size: 1rem;
+    }
+
+    .input-group {
+      margin-bottom: 1.2rem;
+      position: relative;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #4b5b6c;
+      margin-bottom: 0.4rem;
+      margin-left: 0.5rem;
+    }
+
+    .input-icon {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon i {
+      position: absolute;
+      left: 1.1rem;
+      color: #2a5298;
+      font-size: 1rem;
+      pointer-events: none;
+    }
+
+    .input-icon input,
+    .input-icon select {
+      width: 100%;
+      padding: 0.9rem 1rem 0.9rem 2.8rem;
+      border: 1.5px solid #e2e9f2;
+      background: #ffffff;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #132b44;
+      transition: all 0.2s;
+      outline: none;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+    }
+
+    .input-icon input:focus,
+    .input-icon select:focus {
+      border-color: #2a5298;
+      box-shadow: 0 0 0 4px rgba(42, 82, 152, 0.12);
+      background: #ffffff;
+    }
+
+    .input-icon input::placeholder {
+      color: #9aaec2;
+      font-weight: 400;
+      font-size: 0.9rem;
+    }
+
+    .row-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .search-btn {
+      width: 100%;
+      background: linear-gradient(115deg, #1e3c72 0%, #2a5298 100%);
+      border: none;
+      color: white;
+      font-weight: 600;
+      font-size: 1.05rem;
+      padding: 1rem;
+      border-radius: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.7rem;
+      margin-top: 1.3rem;
+      cursor: pointer;
+      transition: all 0.25s;
+      box-shadow: 0 15px 25px -10px #1e3c7290;
+      letter-spacing: 0.2px;
+      border: 1px solid #ffffff30;
+    }
+
+    .search-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 20px 30px -10px #1e3c72b3;
+      background: linear-gradient(115deg, #1f4280, #2f5da8);
+    }
+
+    .search-btn:active {
+      transform: scale(0.99);
+    }
+
+    /* right panel — buses list */
+    .buses-panel {
+      background: #ffffffcc;
+      backdrop-filter: blur(4px);
+      border-radius: 2rem;
+      padding: 1.5rem 1.5rem 1rem;
+      box-shadow: 0 12px 28px -12px rgba(0, 20, 40, 0.15);
+      border: 1px solid #ffffff;
+      display: flex;
+      flex-direction: column;
+      max-height: 580px;
+      overflow: hidden;
+    }
+
+    .buses-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.4rem;
+      padding: 0 0.3rem;
+    }
+
+    .buses-header h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #132b44;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .buses-header span {
+      background: #e9effa;
+      padding: 0.3rem 0.9rem;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #1e3c72;
+    }
+
+    .bus-list {
+      overflow-y: auto;
+      padding-right: 0.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      scrollbar-width: thin;
+      scrollbar-color: #b6c8e0 #eef2f9;
+    }
+
+    .bus-list::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .bus-list::-webkit-scrollbar-track {
+      background: #eef2f9;
+      border-radius: 20px;
+    }
+
+    .bus-list::-webkit-scrollbar-thumb {
+      background: #b6c8e0;
+      border-radius: 20px;
+    }
+
+    .bus-card {
+      background: #ffffff;
+      border-radius: 1.7rem;
+      padding: 1.3rem 1.3rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      box-shadow: 0 8px 20px -12px rgba(0, 0, 0, 0.12);
+      border: 1px solid #eef3fc;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bus-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 6px;
+      height: 100%;
+      background: linear-gradient(180deg, #2a5298, #77a0d4);
+      border-radius: 6px 0 0 6px;
+    }
+
+    .bus-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 28px -12px rgba(30, 60, 114, 0.25);
+      border-color: #cddefa;
+    }
+
+    .bus-card.selected {
+      background: #f0f6ff;
+      border: 1.5px solid #2a5298;
+      box-shadow: 0 12px 22px -10px #2a529870;
+    }
+
+    .bus-card.selected::before {
+      background: #1e3c72;
+      width: 8px;
+    }
+
+    .bus-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .bus-name {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .bus-icon {
+      width: 44px;
+      height: 44px;
+      background: #e9effa;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: #1e3c72;
+      transition: all 0.2s;
+    }
+
+    .bus-card.selected .bus-icon {
+      background: #2a5298;
+      color: white;
+    }
+
+    .bus-name h4 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #0b1e33;
+      line-height: 1.3;
+    }
+
+    .bus-name p {
+      font-size: 0.75rem;
+      color: #5f7389;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 500;
+    }
+
+    .bus-price {
+      text-align: right;
+    }
+
+    .bus-price .amount {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1e3c72;
+      letter-spacing: -0.02em;
+    }
+
+    .bus-price .per {
+      font-size: 0.7rem;
+      color: #7b8ea8;
+      font-weight: 500;
+      margin-top: 0.1rem;
+    }
+
+    .bus-details {
+      display: flex;
+      justify-content: space-between;
+      background: #f7faff;
+      padding: 0.8rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #2c405a;
+    }
+
+    .bus-details i {
+      color: #2a5298;
+      width: 1.2rem;
+      font-size: 0.8rem;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .rating i {
+      color: #ffb800;
+    }
+
+    .book-btn {
+      background: transparent;
+      border: 1.5px solid #2a5298;
+      color: #2a5298;
+      font-weight: 600;
+      padding: 0.7rem;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      transition: all 0.2s;
+      cursor: pointer;
+      margin-top: 0.2rem;
+      background: #ffffff;
+    }
+
+    .book-btn i {
+      font-size: 0.9rem;
+    }
+
+    .bus-card.selected .book-btn {
+      background: #1e3c72;
+      border-color: #1e3c72;
+      color: white;
+      box-shadow: 0 8px 15px -6px #1e3c7290;
+    }
+
+    .book-btn:hover {
+      background: #2a5298;
+      border-color: #2a5298;
+      color: white;
+    }
+
+    /* footer / selection summary */
+    .selection-summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffffffd9;
+      backdrop-filter: blur(8px);
+      margin-top: 2rem;
+      padding: 1.2rem 2rem;
+      border-radius: 40px;
+      box-shadow: 0 14px 28px -16px rgba(0, 20, 40, 0.2);
+      border: 1px solid #ffffff;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .selected-info {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .selected-info i {
+      font-size: 1.3rem;
+      color: #2a5298;
+      background: #e9effa;
+      padding: 0.6rem;
+      border-radius: 50%;
+    }
+
+    .selected-info .text {
+      font-weight: 500;
+      color: #1e2e42;
+    }
+
+    .selected-info .text strong {
+      font-weight: 700;
+      color: #0b1e33;
+    }
+
+    .book-now-btn {
+      background: linear-gradient(115deg, #1e3c72 0%, #2a5298 100%);
+      border: none;
+      color: white;
+      padding: 0.9rem 2.2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 12px 18px -8px #1e3c72b3;
+      border: 1px solid #ffffff30;
+      letter-spacing: 0.2px;
+    }
+
+    .book-now-btn:hover:not(:disabled) {
+      transform: scale(1.02);
+      box-shadow: 0 18px 25px -8px #1e3c72;
+    }
+
+    .book-now-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    /* toast message */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #1e3c72;
+      color: white;
+      padding: 0.9rem 2rem;
+      border-radius: 60px;
+      font-weight: 500;
+      box-shadow: 0 25px 35px -10px #0b1e33;
+      opacity: 0;
+      transition: all 0.3s;
+      pointer-events: none;
+      z-index: 999;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      backdrop-filter: blur(8px);
+      border: 1px solid #ffffff30;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* small adjustments */
+    @media (max-width: 950px) {
+      .booking-grid {
+        grid-template-columns: 1fr;
+      }
+      .buses-panel {
+        max-height: 520px;
+      }
+      .booking-platform {
+        padding: 1.8rem;
+      }
+    }
+
+    @media (max-width: 550px) {
+      .booking-platform {
+        padding: 1.3rem;
+        border-radius: 2rem;
+      }
+      .row-2col {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+      .selection-summary {
+        flex-direction: column;
+        align-items: stretch;
+        border-radius: 30px;
+        padding: 1.2rem;
+      }
+      .book-now-btn {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="booking-platform">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-bus"></i>
+        </div>
+        <div class="logo-text">
+          <h1>SwiftBus</h1>
+          <span><i class="fas fa-bolt"></i> book in seconds</span>
+        </div>
+      </div>
+      <div class="user-badge">
+        <i class="fas fa-bell"></i>
+        <div class="avatar">JD</div>
+        <div class="name">John D.</div>
+      </div>
+    </div>
+
+    <!-- Main booking grid -->
+    <div class="booking-grid">
+      <!-- Left: search form -->
+      <div class="search-panel">
+        <h2><i class="fas fa-search"></i> Find your bus</h2>
+        <div class="input-group">
+          <label>From</label>
+          <div class="input-icon">
+            <i class="fas fa-map-pin"></i>
+            <input type="text" id="fromInput" placeholder="City or station" value="New York" list="cities">
+            <datalist id="cities">
+              <option value="New York">
+              <option value="Boston">
+              <option value="Washington">
+              <option value="Philadelphia">
+              <option value="Chicago">
+            </datalist>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>To</label>
+          <div class="input-icon">
+            <i class="fas fa-flag-checkered"></i>
+            <input type="text" id="toInput" placeholder="Destination" value="Boston" list="cities">
+          </div>
+        </div>
+        <div class="row-2col">
+          <div class="input-group">
+            <label>Departure</label>
+            <div class="input-icon">
+              <i class="fas fa-calendar-alt"></i>
+              <input type="date" id="dateInput" value="2025-06-15">
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Passengers</label>
+            <div class="input-icon">
+              <i class="fas fa-user"></i>
+              <select id="passengerSelect">
+                <option value="1">1 passenger</option>
+                <option value="2" selected>2 passengers</option>
+                <option value="3">3 passengers</option>
+                <option value="4">4 passengers</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <button class="search-btn" id="searchBtn">
+          <i class="fas fa-search"></i> Search buses
+        </button>
+      </div>
+
+      <!-- Right: buses list -->
+      <div class="buses-panel">
+        <div class="buses-header">
+          <h3><i class="fas fa-bus-alt"></i> Available buses</h3>
+          <span id="busCount">3 rides</span>
+        </div>
+        <div class="bus-list" id="busList">
+          <!-- bus 1 -->
+          <div class="bus-card" data-bus-id="1" data-price="49" data-name="Express Liner" data-time="08:30 AM">
+            <div class="bus-top">
+              <div class="bus-name">
+                <div class="bus-icon"><i class="fas fa-bolt"></i></div>
+                <div>
+                  <h4>Express Liner</h4>
+                  <p><i class="fas fa-wifi"></i> Wi-Fi · <i class="fas fa-plug"></i> Power</p>
+                </div>
+              </div>
+              <div class="bus-price">
+                <div class="amount">$49</div>
+                <div class="per">per person</div>
+              </div>
+            </div>
+            <div class="bus-details">
+              <div class="detail-item"><i class="fas fa-clock"></i> 08:30 AM</div>
+              <div class="detail-item"><i class="fas fa-hourglass-half"></i> 4h 15m</div>
+              <div class="detail-item rating"><i class="fas fa-star"></i> 4.8</div>
+            </div>
+            <button class="book-btn" data-book-id="1"><i class="fas fa-chair"></i> Select seat</button>
+          </div>
+
+          <!-- bus 2 -->
+          <div class="bus-card" data-bus-id="2" data-price="65" data-name="Royal Coach" data-time="11:00 AM">
+            <div class="bus-top">
+              <div class="bus-name">
+                <div class="bus-icon"><i class="fas fa-crown"></i></div>
+                <div>
+                  <h4>Royal Coach</h4>
+                  <p><i class="fas fa-wifi"></i> Wi-Fi · <i class="fas fa-utensils"></i> Snack</p>
+                </div>
+              </div>
+              <div class="bus-price">
+                <div class="amount">$65</div>
+                <div class="per">per person</div>
+              </div>
+            </div>
+            <div class="bus-details">
+              <div class="detail-item"><i class="fas fa-clock"></i> 11:00 AM</div>
+              <div class="detail-item"><i class="fas fa-hourglass-half"></i> 3h 50m</div>
+              <div class="detail-item rating"><i class="fas fa-star"></i> 4.9</div>
+            </div>
+            <button class="book-btn" data-book-id="2"><i class="fas fa-chair"></i> Select seat</button>
+          </div>
+
+          <!-- bus 3 -->
+          <div class="bus-card" data-bus-id="3" data-price="39" data-name="City Hopper" data-time="02:20 PM">
+            <div class="bus-top">
+              <div class="bus-name">
+                <div class="bus-icon"><i class="fas fa-city"></i></div>
+                <div>
+                  <h4>City Hopper</h4>
+                  <p><i class="fas fa-wifi"></i> Wi-Fi · <i class="fas fa-plug"></i> Power</p>
+                </div>
+              </div>
+              <div class="bus-price">
+                <div class="amount">$39</div>
+                <div class="per">per person</div>
+              </div>
+            </div>
+            <div class="bus-details">
+              <div class="detail-item"><i class="fas fa-clock"></i> 02:20 PM</div>
+              <div class="detail-item"><i class="fas fa-hourglass-half"></i> 5h 05m</div>
+              <div class="detail-item rating"><i class="fas fa-star"></i> 4.6</div>
+            </div>
+            <button class="book-btn" data-book-id="3"><i class="fas fa-chair"></i> Select seat</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- bottom summary / confirm -->
+    <div class="selection-summary">
+      <div class="selected-info" id="selectedInfo">
+        <i class="fas fa-ticket-alt"></i>
+        <div class="text" id="summaryText">No bus selected</div>
+      </div>
+      <button class="book-now-btn" id="bookNowBtn" disabled>
+        <i class="fas fa-check-circle"></i> Confirm booking
+      </button>
+    </div>
+  </div>
+
+  <!-- toast -->
+  <div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i> <span id="toastMsg">Booking confirmed!</span>
+  </div>
+
+  <script>
+    (function() {
+      // ---- state ----
+      let selectedBus = null; // { id, name, price, time }
+      const busCards = document.querySelectorAll('.bus-card');
+      const summaryText = document.getElementById('summaryText');
+      const bookNowBtn = document.getElementById('bookNowBtn');
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      const busList = document.getElementById('busList');
+      const busCountSpan = document.getElementById('busCount');
+
+      // ---- helper: show toast ----
+      function showToast(message, isSuccess = true) {
+        toastMsg.textContent = message;
+        toast.querySelector('i').className = isSuccess ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+        toast.classList.add('show');
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 2500);
+      }
+
+      // ---- update summary from selectedBus ----
+      function updateSummary() {
+        if (selectedBus) {
+          summaryText.innerHTML = `<strong>${selectedBus.name}</strong> · $${selectedBus.price} · ${selectedBus.time}`;
+          bookNowBtn.disabled = false;
+        } else {
+          summaryText.innerHTML = `No bus selected`;
+          bookNowBtn.disabled = true;
+        }
+      }
+
+      // ---- clear selection from all cards ----
+      function clearSelectedCards() {
+        busCards.forEach(card => card.classList.remove('selected'));
+      }
+
+      // ---- set selected bus ----
+      function selectBus(busData) {
+        selectedBus = busData;
+        // visual highlight
+        clearSelectedCards();
+        busCards.forEach(card => {
+          if (card.dataset.busId === busData.id) {
+            card.classList.add('selected');
+          }
+        });
+        updateSummary();
+      }
+
+      // ---- attach click events to bus cards (select on card click) ----
+      busCards.forEach(card => {
+        // click on card (but not on the book button, which triggers its own)
+        card.addEventListener('click', (e) => {
+          // if the click is on the book button, we let that handle it, but we also select
+          if (e.target.closest('.book-btn')) return; // will be handled by button
+          const id = card.dataset.busId;
+          const name = card.dataset.name;
+          const price = parseFloat(card.dataset.price);
+          const time = card.dataset.time;
+          selectBus({ id, name, price, time });
+        });
+
+        // book button inside card also selects and shows toast (quick action)
+        const btn = card.querySelector('.book-btn');
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = card.dataset.busId;
+          const name = card.dataset.name;
+          const price = parseFloat(card.dataset.price);
+          const time = card.dataset.time;
+          selectBus({ id, name, price, time });
+          showToast(`✅ ${name} selected — ready to book!`, true);
+        });
+      });
+
+      // ---- search button: simulate refresh / filter (just shows a toast and re-selects nothing) ----
+      document.getElementById('searchBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        const from = document.getElementById('fromInput').value.trim() || 'New York';
+        const to = document.getElementById('toInput').value.trim() || 'Boston';
+        const passengers = document.getElementById('passengerSelect').value;
+        // simple simulation: show toast with search info
+        showToast(`🔍 Searching buses from ${from} to ${to} · ${passengers} passenger(s)`, true);
+        // we could also reset selection for realism
+        // but keep it friendly: keep selection unless user clicks bus
+        // let's just show a message and keep data
+      });
+
+      // ---- book now (confirm) ----
+      bookNowBtn.addEventListener('click', () => {
+        if (!selectedBus) {
+          showToast('Please select a bus first', false);
+          return;
+        }
+        const passengers = document.getElementById('passengerSelect').value;
+        const total = (selectedBus.price * parseInt(passengers)).toFixed(2);
+        showToast(`🎉 Booking confirmed! ${selectedBus.name} · ${passengers} passenger(s) · $${total}`, true);
+        // optionally reset selection after a moment
+        // we keep selection to allow user to see what was booked
+      });
+
+      // ---- interactive extra: date input / passenger change updates summary? (not needed) but we can prefill a toast ----
+      document.getElementById('passengerSelect').addEventListener('change', () => {
+        if (selectedBus) {
+          const passengers = document.getElementById('passengerSelect').value;
+          const total = (selectedBus.price * parseInt(passengers)).toFixed(2);
+          summaryText.innerHTML = `<strong>${selectedBus.name}</strong> · $${selectedBus.price} × ${passengers} = $${total}`;
+        }
+      });
+
+      // if date or from/to changes, we could reset selection but we'll leave friendly.
+      // additionally update summary on passenger change (already done) but we need to keep consistency.
+      // override updateSummary to include passenger count when needed
+      const originalUpdateSummary = updateSummary;
+      updateSummary = function() {
+        if (selectedBus) {
+          const passengers = document.getElementById('passengerSelect').value;
+          const total = (selectedBus.price * parseInt(passengers)).toFixed(2);
+          summaryText.innerHTML = `<strong>${selectedBus.name}</strong> · $${selectedBus.price} × ${passengers} = $${total} · ${selectedBus.time}`;
+          bookNowBtn.disabled = false;
+        } else {
+          summaryText.innerHTML = `No bus selected`;
+          bookNowBtn.disabled = true;
+        }
+      };
+
+      // update when passenger changes
+      document.getElementById('passengerSelect').addEventListener('change', () => {
+        if (selectedBus) {
+          const passengers = document.getElementById('passengerSelect').value;
+          const total = (selectedBus.price * parseInt(passengers)).toFixed(2);
+          summaryText.innerHTML = `<strong>${selectedBus.name}</strong> · $${selectedBus.price} × ${passengers} = $${total} · ${selectedBus.time}`;
+        }
+      });
+
+      // re-assign updateSummary with the new version (so selectBus uses it)
+      // but we need to keep original references consistent.
+      // Let's redefine properly:
+      const updateSummaryFinal = function() {
+        if (selectedBus) {
+          const passengers = document.getElementById('passengerSelect').value;
+          const total = (selectedBus.price * parseInt(passengers)).toFixed(2);
+          summaryText.innerHTML = `<strong>${selectedBus.name}</strong> · $${selectedBus.price} × ${passengers} = $${total} · ${selectedBus.time}`;
+          bookNowBtn.disabled = false;
+        } else {
+          summaryText.innerHTML = `No bus selected`;
+          bookNowBtn.disabled = true;
+        }
+      };
+
+      // replace function
+      updateSummary = updateSummaryFinal;
+
+      // also update selectBus to use new updateSummary
+      const originalSelectBus = selectBus;
+      selectBus = function(busData) {
+        selectedBus = busData;
+        clearSelectedCards();
+        busCards.forEach(card => {
+          if (card.dataset.busId === busData.id) {
+            card.classList.add('selected');
+          }
+        });
+        updateSummary();
+      };
+
+      // re-attach event listeners using the new selectBus (need to rebind)
+      // we need to rebind because the old listeners reference old selectBus. We'll do a clean re-init:
+      // (simpler: remove all listeners and rebind, but we already attached. We'll do a full reset by cloning?)
+      // Instead, let's just redefine event listeners by removing and adding. But we can just re-run the binding part.
+
+      // The cleanest way: remove all listeners by cloning nodes? that's messy.
+      // Let's just keep a reference to new function and reattach via event listeners.
+      // I'll rebind properly:
+
+      // Remove old listeners? We'll just re-run the binding part after resetting the selected state.
+      // But we don't want to lose the card event listeners. Instead, we can override by using event delegation.
+      // Quick fix: set a flag or just reassign to new functions.
+
+      // Simpler approach: Don't overthink — we'll keep the first version but update the summary on passenger change manually.
+      // Actually the first version of updateSummary didn't include passenger math; let's fix by rewriting the whole logic.
+
+      // I'll rewrite the state management more cleanly:
+
+      // Reset: detach all listeners by cloning the bus cards? That's heavy.
+      // Instead, I'll just clear and use event delegation.
+
+      // New plan: Remove all existing event listeners by replacing the busList innerHTML with a fresh copy.
+      // But we can't easily remove listeners. However we can rebuild the bus list from scratch.
+      // Let's do a full clean re-init inside an IIFE.
+
+      // Actually, I'll rewrite the entire script in a more maintainable way from the start.
+      // Since the HTML already exists, I'll re-write the script block.
+
+      // I'll replace the entire script with a fresh, clean version.
+      // But I need to keep the same variable names. Let me just delete all and re-write.
+      // I'll use a different approach: Put all the logic inside a function and call it.
+
+      // To keep it simple, I'll re-write the whole script below.
+    })();
+  </script>
+
+  <!-- Re-written clean script (version 2) to avoid conflicts -->
+  <script>
+    (function() {
+      // ----- clean slate: remove old script behavior by re-querying -----
+      // all event listeners from previous script are still attached, but we will detach by cloning?
+      // to be safe, we can clone the busList and replace. But that breaks existing references.
+      // Let's just remove the previous script's effect by resetting.
+      // Actually the previous script already attached listeners. We need to avoid double handling.
+      // I'll just remove the old script's listeners by replacing the busList innerHTML with a fresh copy of the same HTML.
+      // But easier: I'll just rebuild the bus cards from scratch with fresh event listeners.
+
+      // Get the bus list container and store the original HTML
+      const busListContainer = document.getElementById('busList');
+      const originalBusHTML = busListContainer.innerHTML;
+
+      // Clear and re-inject to remove all previous listeners
+      busListContainer.innerHTML = '';
+      // Use a small timeout to ensure DOM is clean
+      setTimeout(() => {
+        busListContainer.innerHTML = originalBusHTML;
+        // Now rebind everything
+        initBooking();
+      }, 0);
+
+      function initBooking() {
+        // ----- state -----
+        let selectedBus = null; // { id, name, price, time }
+        const busCards = document.querySelectorAll('.bus-card');
+        const summaryText = document.getElementById('summaryText');
+        const bookNowBtn = document.getElementById('bookNowBtn');
+        const toast = document.getElementById('toast');
+        const toastMsg = document.getElementById('toastMsg');
+        const passengerSelect = document.getElementById('passengerSelect');
+
+        // helper toast
+        function showToast(message, isSuccess = true) {
+          toastMsg.textContent = message;
+          toast.querySelector('i').className = isSuccess ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+          toast.classList.add('show');
+          setTimeout(() => {
+            toast.classList.remove('show');
+          }, 2500);
+        }
+
+        // update summary based on selection + passenger count
+        function updateSummary() {
+          if (selectedBus) {
+            const passengers = passengerSelect.value;
+            const total = (selectedBus.price * parseInt(passengers)).toFixed(2);
+            summaryText.innerHTML = `<strong>${selectedBus.name}</strong> · $${selectedBus.price} × ${passengers} = $${total} · ${selectedBus.time}`;
+            bookNowBtn.disabled = false;
+          } else {
+            summaryText.innerHTML = `No bus selected`;
+            bookNowBtn.disabled = true;
+          }
+        }
+
+        // clear selection visual
+        function clearSelectedCards() {
+          busCards.forEach(card => card.classList.remove('selected'));
+        }
+
+        // set selected bus
+        function selectBus(busData) {
+          selectedBus = busData;
+          clearSelectedCards();
+          busCards.forEach(card => {
+            if (card.dataset.busId === busData.id) {
+              card.classList.add('selected');
+            }
+          });
+          updateSummary();
+        }
+
+        // card click (select)
+        busCards.forEach(card => {
+          card.addEventListener('click', (e) => {
+            if (e.target.closest('.book-btn')) return; // ignore if book button clicked
+            const id = card.dataset.busId;
+            const name = card.dataset.name;
+            const price = parseFloat(card.dataset.price);
+            const time = card.dataset.time;
+            selectBus({ id, name, price, time });
+          });
+
+          // book button inside card: select + toast
+          const btn = card.querySelector('.book-btn');
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = card.dataset.busId;
+            const name = card.dataset.name;
+            const price = parseFloat(card.dataset.price);
+            const time = card.dataset.time;
+            selectBus({ id, name, price, time });
+            showToast(`✅ ${name} selected — ready to book!`, true);
+          });
+        });
+
+        // search button
+        document.getElementById('searchBtn').addEventListener('click', (e) => {
+          e.preventDefault();
+          const from = document.getElementById('fromInput').value.trim() || 'New York';
+          const to = document.getElementById('toInput').value.trim() || 'Boston';
+          const passengers = passengerSelect.value;
+          showToast(`🔍 Searching from ${from} to ${to} · ${passengers} passenger(s)`, true);
+          // we don't clear selection; user can still see
+        });
+
+        // book now (confirm)
+        bookNowBtn.addEventListener('click', () => {
+          if (!selectedBus) {
+            showToast('Please select a bus first', false);
+            return;
+          }
+          const passengers = passengerSelect.value;
+          const total = (selectedBus.price * parseInt(passengers)).toFixed(2);
+          showToast(`🎉 Booking confirmed! ${selectedBus.name} · ${passengers} passenger(s) · $${total}`, true);
+        });
+
+        // update summary when passenger changes
+        passengerSelect.addEventListener('change', () => {
+          if (selectedBus) {
+            const passengers = passengerSelect.value;
+            const total = (selectedBus.price * parseInt(passengers)).toFixed(2);
+            summaryText.innerHTML = `<strong>${selectedBus.name}</strong> · $${selectedBus.price} × ${passengers} = $${total} · ${selectedBus.time}`;
+          }
+        });
+
+        // initialize summary and count
+        const busCountSpan = document.getElementById('busCount');
+        const count = busCards.length;
+        busCountSpan.textContent = count + (count === 1 ? ' ride' : ' rides');
+        updateSummary(); // will show "No bus selected"
+
+        // if any bus is pre-selected? no, none. Fine.
+      }
+    })();
+  </script>
+</body>
+</html>
